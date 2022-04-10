@@ -8,7 +8,7 @@
     {
       "name": "defaults",
       "hidden": true,
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "binaryDir": "build/${presetName}"
     },
     {
@@ -61,19 +61,30 @@
   ],
   "testPresets": [
     {
+      "name": "defaults",
+      "hidden": true,
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
       "name": "add_subdirectory",
+      "inherits": "defaults",
       "configurePreset": "add_subdirectory"
     },
     {
       "name": "FetchContent",
+      "inherits": "defaults",
       "configurePreset": "FetchContent"
     },
     {
       "name": "find_package",
+      "inherits": "defaults",
       "configurePreset": "find_package"
     },
     {
       "name": "none",
+      "inherits": "defaults",
       "configurePreset": "none"
     }
   ]
