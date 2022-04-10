@@ -78,6 +78,6 @@ if(BUILD_TESTING)
   # cpputest_buildtime_discover_tests(Tests)
   add_test(
     NAME Tests
-    COMMAND ${Tests} -v
+    COMMAND Tests -v
   )
 endif()
