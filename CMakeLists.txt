@@ -42,6 +42,7 @@ if(BUILD_TESTING)
   elseif(INTEGRATION_METHOD STREQUAL "add_subdirectory")
     add_subdirectory(cpputest)
   elseif(INTEGRATION_METHOD STREQUAL "FetchContent")
+    include(FetchContent)
     FetchContent_Declare(cpputest
       GIT_REPOSITORY https://github.com/cpputest/cpputest.git
       GIT_TAG        latest-passing-build
