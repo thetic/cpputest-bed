@@ -70,9 +70,13 @@ if(BUILD_TESTING)
       CppUTest::CppUTestExt
   )
 
-  include(CppUTestNormalizeTestOutputLocation)
-  cpputest_normalize_test_output_location(Tests)
-
-  include(CppUTestBuildTimeDiscoverTests)
-  cpputest_buildtime_discover_tests(Tests)
+  # None of the below works for any integration method:
+  # include(CppUTestNormalizeTestOutputLocation)
+  # cpputest_normalize_test_output_location(Tests)
+  # include(CppUTestBuildTimeDiscoverTests)
+  # cpputest_buildtime_discover_tests(Tests)
+  add_test(
+    NAME Tests
+    COMMAND ${Tests} -v
+  )
 endif()
