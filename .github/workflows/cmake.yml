@@ -35,11 +35,8 @@ jobs:
         working-directory: cpputest
         if: matrix.preset == 'find_package'
 
-      - name: Configure CMake
-        run: cmake --preset ${{matrix.preset}}
-
-      - name: Build
-        run: cmake --build --preset ${{matrix.preset}}
-
-      - name: Test
-        run: ctest --preset ${{matrix.preset}}
+      - uses: lukka/run-cmake@v10
+        with:
+          configurePreset: ${{matrix.preset}}
+          buildPreset: ${{matrix.preset}}
+          testPreset: ${{matrix.preset}}
