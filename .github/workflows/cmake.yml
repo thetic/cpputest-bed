@@ -21,14 +21,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - name: Install CppUTest
         run: |
           cmake -B build -S .
           cmake --build build
-          cmake --install build
+          sudo cmake --install build
           rm -rf build
         working-directory: cpputest
+        if: matrix.preset == 'find_package'
 
       - name: Configure CMake
         run: cmake --preset ${{matrix.preset}}
