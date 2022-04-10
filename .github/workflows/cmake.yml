@@ -16,6 +16,7 @@ jobs:
           - "FetchContent"
           - "add_subdirectory"
           - "find_package"
+      fail-fast: false
 
     runs-on: ubuntu-latest
 
