@@ -8,7 +8,7 @@
     {
       "name": "defaults",
       "hidden": true,
-      "generator": "Unix Makefiles",
+      "generator": "Ninja",
       "binaryDir": "build/${presetName}"
     },
     {
