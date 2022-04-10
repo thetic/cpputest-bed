@@ -4,6 +4,6 @@
 int main(int argc, char **argv) {
   printHelloWorld();
 
-  Printer p = Printer();
+  Printer p;
   p.Print("hello");
 }
