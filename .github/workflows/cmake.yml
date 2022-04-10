@@ -16,9 +16,13 @@ jobs:
           - "FetchContent"
           - "add_subdirectory"
           - "find_package"
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
       fail-fast: false
 
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
 
     steps:
       - uses: lukka/get-cmake@latest
