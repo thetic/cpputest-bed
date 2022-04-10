@@ -7,21 +7,34 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  PRESET: "none"
-
 jobs:
   build:
+    strategy:
+      matrix:
+        preset:
+          - "none"
+          - "FetchContent"
+          - "add_subdirectory"
+          - "find_package"
+
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
+      - name: Install CppUTest
+        run: |
+          cmake -B build -S .
+          cmake --build build
+          cmake --install build
+          rm -rf build
+        working-directory: cpputest
+
       - name: Configure CMake
-        run: cmake --preset ${{env.PRESET}}
+        run: cmake --preset ${{matrix.preset}}
 
       - name: Build
-        run: cmake --build --preset ${{env.PRESET}}
+        run: cmake --build --preset ${{matrix.preset}}
 
       - name: Test
-        run: ctest --preset ${{env.PRESET}}
+        run: ctest --preset ${{matrix.preset}}
