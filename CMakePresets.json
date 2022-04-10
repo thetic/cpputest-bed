@@ -1,0 +1,80 @@
+{
+  "version": 2,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20
+  },
+  "configurePresets": [
+    {
+      "name": "defaults",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "build/${presetName}"
+    },
+    {
+      "name": "add_subdirectory",
+      "inherits": "defaults",
+      "cacheVariables": {
+        "INTEGRATION_METHOD": "add_subdirectory"
+      }
+    },
+    {
+      "name": "FetchContent",
+      "inherits": "defaults",
+      "cacheVariables": {
+        "INTEGRATION_METHOD": "FetchContent",
+        "FETCHCONTENT_SOURCE_DIR_CPPUTEST": "${sourceDir}/cpputest"
+      }
+    },
+    {
+      "name": "find_package",
+      "inherits": "defaults",
+      "cacheVariables": {
+        "INTEGRATION_METHOD": "find_package"
+      }
+    },
+    {
+      "name": "none",
+      "inherits": "defaults",
+      "cacheVariables": {
+        "BUILD_TESTING": false
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "add_subdirectory",
+      "configurePreset": "add_subdirectory"
+    },
+    {
+      "name": "FetchContent",
+      "configurePreset": "FetchContent"
+    },
+    {
+      "name": "find_package",
+      "configurePreset": "find_package"
+    },
+    {
+      "name": "none",
+      "configurePreset": "none"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "add_subdirectory",
+      "configurePreset": "add_subdirectory"
+    },
+    {
+      "name": "FetchContent",
+      "configurePreset": "FetchContent"
+    },
+    {
+      "name": "find_package",
+      "configurePreset": "find_package"
+    },
+    {
+      "name": "none",
+      "configurePreset": "none"
+    }
+  ]
+}
