@@ -42,6 +42,7 @@ if(BUILD_TESTING)
   elseif(INTEGRATION_METHOD STREQUAL "add_subdirectory")
     add_subdirectory(cpputest)
   elseif(INTEGRATION_METHOD STREQUAL "FetchContent")
+    include(FetchContent)
     FetchContent_Declare(cpputest
       GIT_REPOSITORY https://github.com/cpputest/cpputest.git
       GIT_TAG        latest-passing-build
@@ -70,9 +71,13 @@ if(BUILD_TESTING)
       CppUTest::CppUTestExt
   )
 
-  include(CppUTestNormalizeTestOutputLocation)
-  cpputest_normalize_test_output_location(Tests)
-
-  include(CppUTestBuildTimeDiscoverTests)
-  cpputest_buildtime_discover_tests(Tests)
+  # None of the below works for any integration method:
+  # include(CppUTestNormalizeTestOutputLocation)
+  # cpputest_normalize_test_output_location(Tests)
+  # include(CppUTestBuildTimeDiscoverTests)
+  # cpputest_buildtime_discover_tests(Tests)
+  add_test(
+    NAME Tests
+    COMMAND ${Tests} -v
+  )
 endif()

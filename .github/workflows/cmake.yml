@@ -1,0 +1,47 @@
+---
+name: CMake
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        preset:
+          - "none"
+          - "FetchContent"
+          - "add_subdirectory"
+          - "find_package"
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+      fail-fast: false
+
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - uses: lukka/get-cmake@latest
+
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install CppUTest
+        run: |
+          cmake -B build -S .
+          cmake --build build
+          sudo cmake --install build
+          rm -rf build
+        working-directory: cpputest
+        if: matrix.preset == 'find_package'
+
+      - name: Build and test
+        run: |
+          cmake --preset ${{matrix.preset}}
+          cmake --build --preset ${{matrix.preset}}
+          ctest --preset ${{matrix.preset}}
