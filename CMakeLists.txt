@@ -4,8 +4,6 @@ project(cpputest-bed
   LANGUAGES CXX C
 )
 
-set(INTEGRATION_METHOD "local" CACHE STRING "CppUTest integration method")
-
 include(CTest)
 
 
@@ -48,6 +46,8 @@ if(BUILD_TESTING)
       GIT_TAG        latest-passing-build
     )
     FetchContent_MakeAvailable(cpputest)
+  else()
+    message(FATAL_ERROR "Invalid INTEGRATION_METHOD \"${INTEGRATION_METHOD}\"")
   endif()
 
   add_executable(Tests
@@ -71,13 +71,5 @@ if(BUILD_TESTING)
       CppUTest::CppUTestExt
   )
 
-  # None of the below works for any integration method:
-  # include(CppUTestNormalizeTestOutputLocation)
-  # cpputest_normalize_test_output_location(Tests)
-  # include(CppUTestBuildTimeDiscoverTests)
-  # cpputest_buildtime_discover_tests(Tests)
-  add_test(
-    NAME Tests
-    COMMAND Tests -v
-  )
+  cpputest_buildtime_discover_tests(Tests)
 endif()

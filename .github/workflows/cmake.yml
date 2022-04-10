@@ -8,21 +8,38 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  hosted:
     strategy:
+      fail-fast: false
       matrix:
         preset:
           - "none"
           - "FetchContent"
           - "add_subdirectory"
           - "find_package"
-        os:
-          - ubuntu-latest
-          - windows-latest
-          - macos-latest
-      fail-fast: false
+        config:
+          - name: Linux
+            os: ubuntu-latest
+            cc: gcc
+            cxx: g++
+          - name: MinGW
+            os: windows-latest
+            cc: gcc
+            cxx: g++
+          - name: MSVC
+            os: windows-latest
+            cc: cl
+            cxx: cl
+          - name: Apple Clang
+            os: macos-latest
+            cc: clang
+            cxx: clang++
 
-    runs-on: ${{matrix.os}}
+    runs-on: ${{matrix.config.os}}
+
+    env:
+      CC: ${{matrix.config.cc}}
+      CXX: ${{matrix.config.cxx}}
 
     steps:
       - uses: lukka/get-cmake@latest
@@ -31,17 +48,61 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install CppUTest
+      - name: Build CppUTest
         run: |
           cmake -B build -S .
           cmake --build build
-          sudo cmake --install build
-          rm -rf build
         working-directory: cpputest
         if: matrix.preset == 'find_package'
 
-      - name: Build and test
+      - name: Install CppUTest
+        run: sudo cmake --install build
+        working-directory: cpputest
+        if: matrix.preset == 'find_package' && matrix.config.os != 'windows-latest'
+
+      - name: Install CppUTest (Windows)
+        run: cmake --install build
+        working-directory: cpputest
+        if: matrix.preset == 'find_package' && matrix.config.os == 'windows-latest'
+
+      - name: ${{matrix.config.name}} - ${{matrix.preset}}
         run: |
           cmake --preset ${{matrix.preset}}
+          cmake --build --preset ${{matrix.preset}}
+          ctest --preset ${{matrix.preset}}
+
+  cross-compiled:
+    strategy:
+      fail-fast: false
+      matrix:
+        preset:
+          - "none"
+          - "FetchContent"
+          - "add_subdirectory"
+          - "find_package"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: lukka/get-cmake@latest
+      - uses: fiam/arm-none-eabi-gcc@v1
+        with:
+          release: 9-2019-q4
+
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install CppUTest
+        run: |
+          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=../gnu-arm-cm4f.cmake -GNinja
+          cmake --build build
+          sudo cmake --install build
+        working-directory: cpputest
+        if: matrix.preset == 'find_package'
+
+      - name: Build
+        run: |
+          cmake --preset ${{matrix.preset}} -DCMAKE_TOOLCHAIN_FILE=gnu-arm-cm4f.cmake
           cmake --build --preset ${{matrix.preset}}
           ctest --preset ${{matrix.preset}}
