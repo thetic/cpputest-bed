@@ -95,7 +95,7 @@ jobs:
 
       - name: Install CppUTest
         run: |
-          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=../gnu-arm-cm4f.cmake -GNinja
+          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=../gnu-arm-cm4f.cmake -GNinja -DSTD_C=OFF -DCPP_PLATFORM=armcc
           cmake --build build
           sudo cmake --install build
         working-directory: cpputest
@@ -103,6 +103,6 @@ jobs:
 
       - name: Build
         run: |
-          cmake --preset ${{matrix.preset}} -DCMAKE_TOOLCHAIN_FILE=gnu-arm-cm4f.cmake -DSTD_C=OFF
+          cmake --preset ${{matrix.preset}} -DCMAKE_TOOLCHAIN_FILE=gnu-arm-cm4f.cmake -DSTD_C=OFF -DCPP_PLATFORM=armcc
           cmake --build --preset ${{matrix.preset}}
           ctest --preset ${{matrix.preset}}
