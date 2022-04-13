@@ -35,6 +35,8 @@ if(BUILD_TESTING)
 
   # CppUTest should behave consistently, regardless of integration method.
   set(VERBOSE_CONFIG OFF)
+  set(CPPUTEST_FLAGS OFF)
+  set(MEMORY_LEAK_DETECTION OFF)
   if(INTEGRATION_METHOD STREQUAL "find_package")
     find_package(CppUTest REQUIRED)
   elseif(INTEGRATION_METHOD STREQUAL "add_subdirectory")
