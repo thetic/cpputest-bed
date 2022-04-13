@@ -103,6 +103,6 @@ jobs:
 
       - name: Build
         run: |
-          cmake --preset ${{matrix.preset}} -DCMAKE_TOOLCHAIN_FILE=gnu-arm-cm4f.cmake
+          cmake --preset ${{matrix.preset}} -DCMAKE_TOOLCHAIN_FILE=gnu-arm-cm4f.cmake -DSTD_C=OFF
           cmake --build --preset ${{matrix.preset}}
           ctest --preset ${{matrix.preset}}
