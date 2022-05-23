@@ -57,7 +57,13 @@ TEST_GROUP(FE_Demo)
 IGNORE_TEST(FE_Demo, should_fail_when__FE_DIVBYZERO__is_set)
 {
     f = 1.0f;
+    #ifdef _MSC_VER
+        #pragma warning(disable:4723)
+    #endif
     CHECK((f /= 0.0f) >= std::numeric_limits<float>::infinity());
+    #ifdef _MSC_VER
+        #pragma warning(default:4723)
+    #endif
 }
 
 IGNORE_TEST(FE_Demo, should_fail_when__FE_UNDERFLOW__is_set)
