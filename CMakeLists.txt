@@ -71,5 +71,6 @@ if(BUILD_TESTING)
       CppUTest::CppUTestExt
   )
 
+  include(CppUTestBuildTimeDiscoverTests)
   cpputest_buildtime_discover_tests(Tests)
 endif()
